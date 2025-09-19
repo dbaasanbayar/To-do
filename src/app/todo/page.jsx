@@ -16,14 +16,6 @@ export default function Todo() {
     setNewTasks("");
   };
 
-  const handleDelete = (index) => {
-    // console.log("init", index);
-    const DeleteList = tasks.filter((task, i) => {
-      return i != index;
-    });
-    setTasks(...[newTasks]);
-  };
-
   const handleCheck = () => {
     console.log("check init");
   };
@@ -50,12 +42,11 @@ export default function Todo() {
                   <input type="checkbox" onChange={handleCheck} />
                   <p key={index}>{task}</p>
                 </div>
-                <button onClick={() => handleDelete(index)}>delete</button>
+                <button>delete</button>
               </div>
             );
           })}
         </div>
-
         <div className="flex gap-2.5 ">
           <button>All</button>
           <button>Active</button>
