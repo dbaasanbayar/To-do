@@ -16,6 +16,15 @@ const Home = () => {
     setTodos(testArr);
     console.log(testArr);
   };
+  const handleUpdate = (index) => {
+    const testArr = todos.map((todo, i) => {
+      if (i == index) {
+        todo = "hi untaach";
+      }
+      return todo;
+    });
+    setTodos(testArr);
+  };
 
   return (
     <div>
@@ -24,6 +33,7 @@ const Home = () => {
           <p className="flex gap-2" key={index}>
             {todo}
             <button onClick={() => handleDelete(index)}>x</button>
+            <button onClick={() => handleUpdate(index)}>y</button>
           </p>
         );
       })}

@@ -15,11 +15,15 @@ export default function Todo() {
     setTasks([...tasks, newTasks]);
     setNewTasks("");
   };
-
+  const HandleRemove = (index) => {
+    const taskRemover = tasks.filter((task, i) => {
+      return i != index;
+    });
+    setTasks(taskRemover);
+  };
   const handleCheck = () => {
     console.log("check init");
   };
-
   return (
     <div className="flex justify-center pb-[594px] pt-15 bg-[#F3F4F6]">
       <div className="flex flex-col py-6 px-4 items-center rounded-[6px] bg-[#FFF]">
@@ -42,7 +46,7 @@ export default function Todo() {
                   <input type="checkbox" onChange={handleCheck} />
                   <p key={index}>{task}</p>
                 </div>
-                <button>delete</button>
+                <button onClick={() => HandleRemove(index)}>delete</button>
               </div>
             );
           })}
