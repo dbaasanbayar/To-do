@@ -4,7 +4,7 @@ export function Input(props) {
     <input
       type="text"
       value={newTasks}
-      placeholder=" Add a new task..."
+      placeholder="Add a new task..."
       onChange={HandleOnChange}
       className="border-2"
     ></input>

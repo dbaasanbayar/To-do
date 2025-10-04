@@ -13,6 +13,9 @@ export default function Todo() {
   };
   const HandleOnClicK = () => {
     setTasks([...tasks, newTasks]);
+    if (newTasks === "") {
+      alert("write something");
+    }
     setNewTasks("");
   };
   const HandleRemove = (index) => {
