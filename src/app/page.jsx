@@ -14,18 +14,31 @@ export default function Todo() {
 
   // add button
   const HandleOnClicK = () => {
-    setTasks([...tasks, newTasks]);
+    const taskGen = { isCompleted: false, text: newTasks };
+    setTasks([...tasks, taskGen]);
     setNewTasks("");
   };
 
   //delete button
   const HandleDelete = (index) => {
-    const taskDelete = tasks.filter((task, i) => {
+    const taskDelete = tasks.filter((taskGen, i) => {
       return i != index;
     });
     setTasks(taskDelete);
   };
-  const handleCheck = (index) => {};
+
+  //filter active
+  const handleActive = (index) => {
+    const taskActive = tasks.filter((taskGen, index) => !taskGen.isCompleted);
+  };
+  //filter completed
+  const handleCompleted = (index) => {
+    const taskCompleted = tasks.filter((taskGen, index) => taskGen.isCompleted);
+    return taskCompleted;
+  };
+
+  const handleCheck = () => {};
+
   return (
     <div className="flex justify-center h-screen max-full items-center bg-[#F3F4F6]">
       <div className="flex flex-col py-6 px-10 items-center rounded-[6px] bg-gray-200">
@@ -41,7 +54,7 @@ export default function Todo() {
           <Button HandleOnClicK={HandleOnClicK} />
         </div>
         <div className="flex gap-3 flex-col">
-          {tasks.map((task, index) => {
+          {tasks.map((taskGen, index) => {
             return (
               <div
                 key={index}
@@ -50,10 +63,10 @@ export default function Todo() {
                 <div className="flex items-center gap-2.5">
                   <input
                     type="checkbox"
-                    onChange={handleCheck}
-                    defaultChecked={false}
+                    onChange={handleCheck(index)}
+                    defaultChecked={taskGen.isCompleted}
                   />
-                  <p>{task}</p>
+                  <p>{taskGen.text}</p>
                 </div>
                 <button
                   className="rounded font-semibold border-2 cursor-pointer hover:bg-red-200 hover:text-white border-red-400 text-red-500 text-l flex items-center py-2 px-2"
@@ -69,10 +82,16 @@ export default function Todo() {
           <button className="border-2 font-semibold hover:bg-amber-200 hover:text-white cursor-pointer transition-all duration-600 border-amber-400 text-amber-500 rounded py-1 px-2">
             All
           </button>
-          <button className="border-2 font-semibold hover:bg-amber-200 hover:text-white cursor-pointer transition-all duration-600 border-amber-400 text-amber-500 rounded px-2">
+          <button
+            onClick={handleActive}
+            className="border-2 font-semibold hover:bg-amber-200 hover:text-white cursor-pointer transition-all duration-600 border-amber-400 text-amber-500 rounded px-2"
+          >
             Active
           </button>
-          <button className="border-2 font-semibold hover:bg-amber-200 hover:text-white cursor-pointer transition-all duration-600 border-amber-400 text-amber-500 rounded px-2">
+          <button
+            onClick={handleCompleted}
+            className="border-2 font-semibold hover:bg-amber-200 hover:text-white cursor-pointer transition-all duration-600 border-amber-400 text-amber-500 rounded px-2"
+          >
             Completed
           </button>
         </div>
