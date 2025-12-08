@@ -4,8 +4,12 @@ import { useState } from "react";
 import { Button } from "./_components/Button";
 
 export default function Todo() {
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState([
+    { text: "make to do", isCompleted: false },
+    { text: "do not make to do", completed: true },
+  ]);
   const [newTasks, setNewTasks] = useState("");
+  const [filter, setFilter] = useState("all");
 
   // input
   const HandleOnChange = (e) => {
@@ -14,31 +18,33 @@ export default function Todo() {
 
   // add button
   const HandleOnClicK = () => {
-    const taskGen = { isCompleted: false, text: newTasks };
-    setTasks([...tasks, taskGen]);
+    if (newTasks.trim() === "") return;
+    const task = { isCompleted: false, text: newTasks };
+    setTasks([...tasks, task]);
     setNewTasks("");
   };
 
   //delete button
   const HandleDelete = (index) => {
-    const taskDelete = tasks.filter((taskGen, i) => {
+    const taskDelete = tasks.filter((task, i) => {
       return i != index;
     });
     setTasks(taskDelete);
   };
-
-  //filter active
-  const handleActive = (index) => {
-    const taskActive = tasks.filter((taskGen, index) => !taskGen.isCompleted);
-  };
-  //filter completed
-  const handleCompleted = (index) => {
-    const taskCompleted = tasks.filter((taskGen, index) => taskGen.isCompleted);
-    return taskCompleted;
+  const handleCheck = (index) => {
+    console.log("index catching", index);
+    setTasks(
+      tasks.map((task, i) =>
+        i === index ? { ...task, isCompleted: !task.isCompleted } : task
+      )
+    );
   };
 
-  const handleCheck = () => {};
-
+  const filterHandler = tasks.filter((task) => {
+    if (filter === "active") return !task.isCompleted;
+    if (filter === "completed") return task.isCompleted;
+    else return true;
+  });
   return (
     <div className="flex justify-center h-screen max-full items-center bg-[#F3F4F6]">
       <div className="flex flex-col py-6 px-10 items-center rounded-[6px] bg-gray-200">
@@ -49,12 +55,13 @@ export default function Todo() {
             value={newTasks}
             placeholder="Add a new task..."
             onChange={HandleOnChange}
+            onKeyDown={(e) => e.key === "Enter" && HandleOnClicK()}
             className="border-2 rounded px-2"
           />
           <Button HandleOnClicK={HandleOnClicK} />
         </div>
         <div className="flex gap-3 flex-col">
-          {tasks.map((taskGen, index) => {
+          {tasks.map((task, index) => {
             return (
               <div
                 key={index}
@@ -63,10 +70,13 @@ export default function Todo() {
                 <div className="flex items-center gap-2.5">
                   <input
                     type="checkbox"
-                    onChange={handleCheck(index)}
-                    defaultChecked={taskGen.isCompleted}
+                    defaultChecked={task.isCompleted}
+                    onClick={() => handleCheck(index)}
                   />
-                  <p>{taskGen.text}</p>
+                  <p className={task.isCompleted ? "line-through" : ""}>
+                    {task.text}
+                  </p>
+                  {/* className={task.completed ? "line-through text-gray-600" : ""} */}
                 </div>
                 <button
                   className="rounded font-semibold border-2 cursor-pointer hover:bg-red-200 hover:text-white border-red-400 text-red-500 text-l flex items-center py-2 px-2"
@@ -82,14 +92,11 @@ export default function Todo() {
           <button className="border-2 font-semibold hover:bg-amber-200 hover:text-white cursor-pointer transition-all duration-600 border-amber-400 text-amber-500 rounded py-1 px-2">
             All
           </button>
-          <button
-            onClick={handleActive}
-            className="border-2 font-semibold hover:bg-amber-200 hover:text-white cursor-pointer transition-all duration-600 border-amber-400 text-amber-500 rounded px-2"
-          >
+          <button className="border-2 font-semibold hover:bg-amber-200 hover:text-white cursor-pointer transition-all duration-600 border-amber-400 text-amber-500 rounded px-2">
             Active
           </button>
           <button
-            onClick={handleCompleted}
+            onClick={() => setFilter("completed")}
             className="border-2 font-semibold hover:bg-amber-200 hover:text-white cursor-pointer transition-all duration-600 border-amber-400 text-amber-500 rounded px-2"
           >
             Completed
