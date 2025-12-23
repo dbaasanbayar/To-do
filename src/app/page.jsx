@@ -7,10 +7,9 @@ export default function Todo() {
   const [tasks, setTasks] = useState(() => {
     const saved = localStorage.getItem("tasks");
     return saved ? JSON.parse(saved) : [];
-  })
+  });
   const [newTasks, setNewTasks] = useState("");
   const [filter, setFilter] = useState("all");
-  
 
   // input
   const HandleOnChange = (e) => {
@@ -25,8 +24,8 @@ export default function Todo() {
     setNewTasks("");
   };
   useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks))
-  },[tasks]);
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }, [tasks]);
 
   //delete button
   const HandleDelete = (id) => {
@@ -87,33 +86,30 @@ export default function Todo() {
                 >
                   Delete
                 </button>
-              </div>)
+              </div>
+            );
           })}
           {tasks.length === 0 && (
             <p className="text-center text-gray-500 py-8">
               {filter === "all" ? "No tasks yet!" : `${filter}`}
-            </p>)}
-        </div>
-        
-        <div className="flex gap-2.5 py-4">
-          {["all", "active", "completed"].map(
-            (
-              f,
-              i 
-            ) => (
-              <button
-                key={i} 
-                onClick={() => setFilter(f)}
-                className={`px-4 py-2 rounded font-medium border-2 transition ${
-                  filter === f
-                    ? "bg-amber-500 text-white border-amber-600" // Active state
-                    : "border-amber-400 text-amber-600 hover:bg-amber-100" // Inactive state
-                }`}
-              >
-                {f}
-              </button>
-            )
+            </p>
           )}
+        </div>
+
+        <div className="flex gap-2.5 py-4">
+          {["all", "active", "completed"].map((f, i) => (
+            <button
+              key={i}
+              onClick={() => setFilter(f)}
+              className={`px-4 py-2 rounded font-medium border-2 transition ${
+                filter === f
+                  ? "bg-amber-500 text-white border-amber-600" // Active state
+                  : "border-amber-400 text-amber-600 hover:bg-amber-100" // Inactive state
+              }`}
+            >
+              {f}
+            </button>
+          ))}
         </div>
         <div className="flex gap-1">
           <p className="text-[#6B7280]">Powered by</p>
